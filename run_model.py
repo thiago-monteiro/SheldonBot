@@ -15,7 +15,10 @@ while user_input != "done":
     new_user_input_ids = tokenizer.encode(user_input + tokenizer.eos_token, return_tensors='pt').to(device)
 
     # append the new user input tokens to the chat history
-    bot_input_ids = torch.cat([chat_history_ids, new_user_input_ids], dim=-1) if step > 0 or step > 5 else new_user_input_ids
+    bot_input_ids = torch.cat([chat_history_ids, new_user_input_ids], dim=-1) if step > 0 and step < 6 else new_user_input_ids
+    
+    if step > 5:
+        step = 0
 
     # generated a response while limiting the total chat history to 1000 tokens    
     chat_history_ids = model.generate(
