@@ -52,14 +52,14 @@ class Args():
         self.do_train = True
         self.do_eval = True
         self.evaluate_during_training = False
-        self.per_gpu_train_batch_size = 6
-        self.per_gpu_eval_batch_size = 6
+        self.per_gpu_train_batch_size = 1
+        self.per_gpu_eval_batch_size = 1
         self.gradient_accumulation_steps = 1
         self.learning_rate = 5e-5
         self.weight_decay = 0.0
         self.adam_epsilon = 1e-8
         self.max_grad_norm = 1.0
-        self.num_train_epochs = 10
+        self.num_train_epochs = 3
         self.max_steps = -1
         self.warmup_steps = 0
         self.logging_steps = 1000
@@ -78,7 +78,7 @@ class Args():
 args = Args()
 
 # Let's look at original dataset
-all_sheldon = pd.read_csv('bbt_weighted_og.csv')
+all_sheldon = pd.read_csv('bbt.csv')
 print(all_sheldon.head(10))
 
 contexted = []
@@ -113,7 +113,7 @@ def construct_conv(row, tokenizer, eos = True):
 class ConversationDataset(Dataset):
     def __init__(self, tokenizer: PreTrainedTokenizer, args, df, block_size=512):
 
-        block_size = block_size - (tokenizer.model_max_length - tokenizer.max_len_single_sentence)
+        block_size = block_size - (tokenizer.max_len - tokenizer.max_len_single_sentence)
 
         directory = args.cache_dir
         cached_features_file = os.path.join(
