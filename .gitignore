@@ -1,0 +1,5 @@
+runs/
+model/
+.vscode
+__pycache__
+bbt*.csv
